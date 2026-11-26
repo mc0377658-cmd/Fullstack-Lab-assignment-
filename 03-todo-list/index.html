@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>To-Do List</title>
+    <style>
+      body {
+        font: 16px Arial;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      li {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin: 10px 0;
+      }
+      li span {
+        flex: 1;
+      }
+      .done {
+        text-decoration: line-through;
+        color: #888;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>To-Do List</h1>
+    <input id="task" placeholder="Enter a task" /><button id="add">Add</button>
+    <ul id="list"></ul>
+    <script>
+      let tasks = [];
+      const input = document.querySelector("#task"),
+        list = document.querySelector("#list");
+      function render() {
+        list.replaceChildren();
+        tasks.forEach((t, i) => {
+          const li = document.createElement("li"),
+            cb = document.createElement("input"),
+            label = document.createElement("span");
+          cb.type = "checkbox";
+          cb.checked = t.done;
+          cb.onchange = () => {
+            t.done = cb.checked;
+            render();
+          };
+          label.textContent = t.text;
+          if (t.done) label.className = "done";
+          li.append(cb, label);
+          [
+            ["Move up", -1],
+            ["Move down", 1],
+            ["Delete", 0],
+          ].forEach(([name, dir]) => {
+            const b = document.createElement("button");
+            b.textContent = name;
+            b.onclick = () => {
+              if (dir === 0) tasks.splice(i, 1);
+              else {
+                const j = i + dir;
+                if (j >= 0 && j < tasks.length)
+                  [tasks[i], tasks[j]] = [tasks[j], tasks[i]];
+              }
+              render();
+            };
+            li.append(b);
+          });
+          list.append(li);
+        });
+      }
+      document.querySelector("#add").onclick = () => {
+        if (input.value.trim()) {
+          tasks.push({ text: input.value.trim(), done: false });
+          input.value = "";
+          render();
+        }
+      };
+      render();
+    </script>
+  </body>
+</html>

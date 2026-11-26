@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Snakes and Ladders</title>
+    <style>
+      body {
+        font-family: Arial;
+        text-align: center;
+      }
+      .board {
+        display: grid;
+        grid-template-columns: repeat(10, min(8.5vw, 48px));
+        justify-content: center;
+      }
+      .cell {
+        height: min(8.5vw, 48px);
+        border: 1px solid #aaa;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        position: relative;
+      }
+      .p1 {
+        background: #ffd166 !important;
+      }
+      .p2 {
+        background: #8ecae6 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Snakes and Ladders</h1>
+    <p id="status">Player 1's turn</p>
+    <div id="board" class="board"></div>
+    <button id="roll">Roll dice</button>
+    <script>
+      const jumps = {
+        4: 14,
+        9: 31,
+        17: 7,
+        20: 38,
+        28: 84,
+        40: 59,
+        51: 67,
+        54: 34,
+        62: 19,
+        63: 81,
+        64: 60,
+        71: 91,
+        87: 24,
+        93: 73,
+        95: 75,
+        99: 78,
+      };
+      let pos = [0, 0],
+        turn = 0;
+      const board = document.querySelector("#board"),
+        status = document.querySelector("#status");
+      for (let n = 100; n >= 1; n--) {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.id = "sq" + n;
+        cell.textContent = n;
+        board.append(cell);
+      }
+      function paint() {
+        document
+          .querySelectorAll(".cell")
+          .forEach((c) => c.classList.remove("p1", "p2"));
+        pos.forEach((p, i) => {
+          if (p) document.querySelector("#sq" + p).classList.add("p" + (i + 1));
+        });
+      }
+      document.querySelector("#roll").onclick = () => {
+        const roll = 1 + Math.floor(Math.random() * 6),
+          target = pos[turn] + roll;
+        if (target <= 100) pos[turn] = jumps[target] || target;
+        paint();
+        if (pos[turn] === 100) {
+          status.textContent = `Player ${turn + 1} wins!`;
+          document.querySelector("#roll").disabled = true;
+        } else {
+          turn = 1 - turn;
+          status.textContent = `Rolled ${roll}. Player ${turn + 1}'s turn`;
+        }
+      };
+      paint();
+    </script>
+  </body>
+</html>

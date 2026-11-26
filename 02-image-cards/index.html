@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Ten Image Cards</title>
+    <style>
+      body {
+        font-family: Arial;
+        margin: 20px;
+        background: #f4f4f4;
+      }
+      .cards {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding: 12px;
+      }
+      .card {
+        flex: 0 0 220px;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px #bbb;
+      }
+      .card img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+      }
+      .card h3,
+      .card p {
+        margin: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Ten Image Cards</h1>
+    <div class="cards" id="cards"></div>
+    <script>
+      const host = document.querySelector("#cards");
+      for (let i = 1; i <= 10; i++) {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `<img src="https://picsum.photos/seed/${i}/440/260" alt="Sample image ${i}"><h3>Card ${i}</h3><p>This is the description of card number ${i}.</p>`;
+        host.append(card);
+      }
+    </script>
+  </body>
+</html>

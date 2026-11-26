@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Product API Client</title>
+  </head>
+  <body>
+    <h1>Products</h1>
+    <form id="form">
+      <input name="name" placeholder="Product name" required /><input
+        name="price"
+        type="number"
+        min="0"
+        step=".01"
+        placeholder="Price"
+        required
+      /><input
+        name="rating"
+        type="number"
+        min="0"
+        max="5"
+        step=".1"
+        placeholder="Rating"
+      /><button>Add product</button>
+    </form>
+    <p id="message"></p>
+    <ul id="products"></ul>
+    <script>
+      const form = document.querySelector("#form"),
+        list = document.querySelector("#products"),
+        message = document.querySelector("#message");
+      async function load() {
+        const res = await fetch("/api/products");
+        const data = await res.json();
+        list.replaceChildren();
+        data.forEach((p) => {
+          const li = document.createElement("li");
+          li.textContent = `#${p.id} ${p.name} — $${p.price} — rating ${p.rating}`;
+          list.append(li);
+        });
+      }
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(form));
+        const res = await fetch("/api/products", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        message.textContent = res.ok
+          ? "Product added."
+          : "Could not add product.";
+        if (res.ok) {
+          form.reset();
+          load();
+        }
+      };
+      load();
+    </script>
+  </body>
+</html>

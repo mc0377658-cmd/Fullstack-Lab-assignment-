@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Random Joke API</title>
+    <style>
+      body {
+        font: 18px Arial;
+        max-width: 700px;
+        margin: 60px auto;
+        text-align: center;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Random Joke</h1>
+    <p id="joke">Press the button to get a joke.</p>
+    <button id="next">Get Joke</button>
+    <script>
+async function getJoke() {
+    const jokeElement = document.getElementById("joke");
+
+    jokeElement.textContent = "Loading...";
+
+    try {
+        const response = await fetch(
+            "https://official-joke-api.appspot.com/random_joke"
+        );
+
+        if (!response.ok) {
+            throw new Error("API request failed");
+        }
+
+        const joke = await response.json();
+
+        jokeElement.textContent =
+            joke.setup + " " + joke.punchline;
+
+    } catch (error) {
+        jokeElement.textContent =
+            "Unable to load joke. Please try again.";
+        console.error(error);
+    }
+}
+
+document.getElementById("next").addEventListener("click", getJoke);
+
+getJoke();
+</script>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Universities by Country</title>
+    <style>
+      body {
+        font: 16px Arial;
+        max-width: 850px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      li {
+        margin: 12px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Universities by Country</h1>
+    <input id="country" placeholder="e.g. India" /><button id="search">
+      Search
+    </button>
+    <p id="message"></p>
+    <ul id="results"></ul>
+    <script>
+      document.querySelector("#search").onclick = async () => {
+        const country = document.querySelector("#country").value.trim(),
+          message = document.querySelector("#message"),
+          list = document.querySelector("#results");
+        list.replaceChildren();
+        if (!country) {
+          message.textContent = "Enter a country name.";
+          return;
+        }
+        message.textContent = "Loading...";
+        try {
+          const res = await fetch(
+            "http://universities.hipolabs.com/search?country=" +
+              encodeURIComponent(country),
+          );
+          if (!res.ok) throw Error();
+          const data = await res.json();
+          message.textContent = `Found ${data.length} universities.`;
+          data.forEach((u) => {
+            const li = document.createElement("li"),
+              a = document.createElement("a");
+            a.textContent = u.name;
+            a.href = u.web_pages[0] || "#";
+            a.target = "_blank";
+            a.rel = "noopener";
+            li.append(
+              a,
+              document.createTextNode(
+                " — " + (u["state-province"] || "State not listed"),
+              ),
+            );
+            list.append(li);
+          });
+        } catch {
+          message.textContent =
+            "Could not fetch universities. Check your connection and country spelling.";
+        }
+      };
+    </script>
+  </body>
+</html>

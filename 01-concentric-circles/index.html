@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Concentric Circles</title>
+    <style>
+      body {
+        font-family: Arial;
+        text-align: center;
+        padding: 40px;
+      }
+      .stage {
+        width: 60px;
+        height: 60px;
+        position: relative;
+        margin: 30px auto;
+      }
+      .circle {
+        position: absolute;
+        border-radius: 50%;
+      }
+      .outer {
+        width: 60px;
+        height: 60px;
+        background: #e74c3c;
+      }
+      .middle {
+        width: 40px;
+        height: 40px;
+        background: #f1c40f;
+        left: 10px;
+        top: 10px;
+      }
+      .inner {
+        width: 20px;
+        height: 20px;
+        background: #3498db;
+        left: 20px;
+        top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Three Concentric Circles</h1>
+    <p>Radii: 30px, 20px and 10px</p>
+    <div class="stage">
+      <div class="circle outer"></div>
+      <div class="circle middle"></div>
+      <div class="circle inner"></div>
+    </div>
+  </body>
+</html>

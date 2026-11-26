@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dynamic Chessboard</title>
+    <style>
+      body {
+        font-family: Arial;
+        text-align: center;
+      }
+      .board {
+        display: grid;
+        grid-template-columns: repeat(8, min(11vw, 64px));
+        width: max-content;
+        margin: 20px auto;
+        border: 3px solid #333;
+      }
+      .square {
+        width: min(11vw, 64px);
+        height: min(11vw, 64px);
+        display: grid;
+        place-items: center;
+        font-size: clamp(22px, 6vw, 42px);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Chessboard (created with JavaScript)</h1>
+    <div id="board" class="board"></div>
+    <script>
+      const board = document.querySelector("#board"),
+        back = ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"];
+      for (let r = 0; r < 8; r++)
+        for (let c = 0; c < 8; c++) {
+          const sq = document.createElement("div");
+          sq.className = "square";
+          sq.style.background = (r + c) % 2 ? "#f0d9b5" : "#779556";
+          if (r === 0) sq.textContent = back[c];
+          if (r === 1) sq.textContent = "♟";
+          if (r === 6) sq.textContent = "♙";
+          if (r === 7)
+            sq.textContent = ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"][c];
+          board.append(sq);
+        }
+    </script>
+  </body>
+</html>
